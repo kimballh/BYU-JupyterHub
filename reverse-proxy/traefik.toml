@@ -1,0 +1,26 @@
+debug = false
+
+logLevel = "INFO"
+defaultEntryPoints = ["https","http"]
+
+# Redirect HTTP -> HTTPS, install certificates
+[entryPoints]
+  [entryPoints.http]
+  address = ":8000"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/etc/certs/piccolo_hub.cert"
+      keyFile = "/etc/certs/piccolo_hub.key"
+
+# Activate docker API
+[docker]
+domain = "docker.local"
+watch = true
+
+# Activate Traefik dashboard
+[api]
+

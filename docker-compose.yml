@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  jupyterhub:
+    build: jupyterhub
+    image: jupyterhub_image
+    container_name: jupyterhub
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+#      - jupyterhub_data:/srv/jupyterhub
+    environment:
+      DOCKER_JUPYTER_CONTAINER: jupyterlab_img
+      DOCKER_NETWORK_NAME: ${COMPOSE_PROJECT_NAME}_default
+      HUB_IP: jupyterhub
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:kumiko.byu.edu:1234"
+#    restart: on-failure
+
+  jupyterlab:
+    image: jupyter/datascience-notebook
+    container_name: jupyterlab-throaway
+    command: echo
+
+  reverse-proxy:
+    image: traefik
+    container_name: reverse-proxy
+    ports:
+      - "8000:8000"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - ./reverse-proxy/traefik.toml:/etc/traefik/traefik.toml
+      - ../certs:/etc/certs
+      - /var/run/docker.sock:/var/run/docker.sock
+#    restart: on-failure
+
