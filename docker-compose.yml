@@ -4,34 +4,45 @@ services:
   jupyterhub:
     build: jupyterhub
     image: jupyterhub_image
-    container_name: jupyterhub
+    container_name: jupyterhub_hub
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-#      - jupyterhub_data:/srv/jupyterhub
+        #      - jupyterhub_data:/srv/jupyterhub
     environment:
-      DOCKER_JUPYTER_CONTAINER: jupyterlab_img
+      DOCKER_JUPYTER_CONTAINER: jupyter/datascience-notebook
       DOCKER_NETWORK_NAME: ${COMPOSE_PROJECT_NAME}_default
-      HUB_IP: jupyterhub
+      HUB_IP: jupyterhub_hub
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:kumiko.byu.edu:1234"
-#    restart: on-failure
+      - "traefik.frontend.rule=Host:bonsai.byu.edu"
+      - "traefik.docker.network=${COMPOSE_PROJECT_NAME}_default"
+    restart: on-failure
 
   jupyterlab:
     image: jupyter/datascience-notebook
     container_name: jupyterlab-throaway
+    network_mode: none
     command: echo
 
   reverse-proxy:
     image: traefik
     container_name: reverse-proxy
     ports:
-      - "8000:8000"
+      - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
       - ./reverse-proxy/traefik.toml:/etc/traefik/traefik.toml
       - ../certs:/etc/certs
       - /var/run/docker.sock:/var/run/docker.sock
-#    restart: on-failure
+    restart: on-failure
 
+  oauth2_server:
+    image: byucas
+    container_name: c2o2b
+    volumes:
+      - ./oauth2/config.js:/home/node/config.js
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:bonsai.byu.edu;PathPrefixStrip:/c2o2b/"
+    restart: on-failure
