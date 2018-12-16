@@ -38,10 +38,8 @@ services:
     restart: on-failure
 
   oauth2_server:
-    image: byucas
+    build: authentication
     container_name: c2o2b
-    volumes:
-      - ./oauth2/config.js:/home/node/config.js
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:bonsai.byu.edu;PathPrefixStrip:/c2o2b/"

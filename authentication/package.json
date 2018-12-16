@@ -1,0 +1,22 @@
+{
+  "name": "cas2oauth2bridge",
+  "version": "0.1.1",
+  "description": "OAuth2 bridge for CAS server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luca De Feo",
+  "repository": "https://github.com/defeo/cas2oauth2bridge",
+  "license": "MIT",
+  "dependencies": {
+    "passport-saml": "^0.35.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5",
+    "restify": "^7.2.1"
+  },
+  "devDependencies": {
+    "passport": "^0.4.0",
+    "passport-oauth2": "^1.4.0"
+  }
+}
