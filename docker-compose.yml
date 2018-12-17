@@ -9,7 +9,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
         #      - jupyterhub_data:/srv/jupyterhub
     environment:
-      DOCKER_JUPYTER_CONTAINER: jupyter/datascience-notebook
+      DOCKER_JUPYTER_CONTAINER: tensorlab
       DOCKER_NETWORK_NAME: ${COMPOSE_PROJECT_NAME}_default
       HUB_IP: jupyterhub_hub
     labels:
@@ -19,7 +19,7 @@ services:
     restart: on-failure
 
   jupyterlab:
-    image: jupyter/datascience-notebook
+    image: tensorlab
     container_name: jupyterlab-throaway
     network_mode: none
     command: echo
