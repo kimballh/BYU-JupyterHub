@@ -34,7 +34,7 @@ module.exports = {
 	clients: {
 	    "0": {
 		secret: null,
-		redirectUri: new RegExp('^https://bonsai\\.byu\\.edu/'),
+		redirectUri: new RegExp('^https://.*\\.byu\\.edu/'),
 	    },
 	},
     },

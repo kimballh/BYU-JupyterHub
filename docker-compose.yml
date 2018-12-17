@@ -9,17 +9,18 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
         #      - jupyterhub_data:/srv/jupyterhub
     environment:
-      DOCKER_JUPYTER_CONTAINER: jupyter/datascience-notebook
+      DOCKER_JUPYTER_CONTAINER: ${SINGLE_SERVER_IMAGE}
       DOCKER_NETWORK_NAME: ${COMPOSE_PROJECT_NAME}_default
       HUB_IP: jupyterhub_hub
+      PROJECT_DOMAIN: ${PROJECT_DOMAIN}
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:bonsai.byu.edu"
+      - "traefik.frontend.rule=Host:${PROJECT_DOMAIN}"
       - "traefik.docker.network=${COMPOSE_PROJECT_NAME}_default"
     restart: on-failure
 
   jupyterlab:
-    image: jupyter/datascience-notebook
+    image: ${SINGLE_SERVER_IMAGE}
     container_name: jupyterlab-throaway
     network_mode: none
     command: echo
@@ -33,8 +34,10 @@ services:
       - "8080:8080"
     volumes:
       - ./reverse-proxy/traefik.toml:/etc/traefik/traefik.toml
-      - ../certs:/etc/certs
+      - ./certs:/etc/certs
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      PROJECT_DOMAIN: ${PROJECT_DOMAIN}
     restart: on-failure
 
   oauth2_server:
@@ -42,5 +45,5 @@ services:
     container_name: c2o2b
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:bonsai.byu.edu;PathPrefixStrip:/c2o2b/"
+      - "traefik.frontend.rule=Host:${PROJECT_DOMAIN};PathPrefixStrip:/c2o2b/"
     restart: on-failure

@@ -11,13 +11,14 @@ c.Spawner.default_url = '/lab'
 #c.GitHubOAuthenticator.client_secret = 'f49f2f0e2ef18f76dfa5b4ad9589a3f59add631e'
 
 ## Authenticator
+PROJECT_DOMAIN = os.environ['PROJECT_DOMAIN']
 from oauthenticator.oauth2 import OAuthLoginHandler
 from oauthenticator.generic import GenericOAuthenticator
 from tornado.auth import OAuth2Mixin
 
 class BYUMixin(OAuth2Mixin):
-    _OAUTH_AUTHORIZE_URL = 'http://bonsai.byu.edu/c2o2b/login'
-    _OAUTH_ACCESS_TOKEN_URL = 'http://bonsai.byu.edu/c2o2b/token'
+    _OAUTH_AUTHORIZE_URL = 'http://{}/c2o2b/login'.format(PROJECT_DOMAIN)
+    _OAUTH_ACCESS_TOKEN_URL = 'http://{}/c2o2b/token'.format(PROJECT_DOMAIN)
 
 class BYULoginHandler(OAuthLoginHandler, BYUMixin):
     pass
@@ -28,9 +29,9 @@ class BYUAuthenticator(GenericOAuthenticator):
     client_id = '0'
     client_secret = ''
     tls_verify = False
-    userdata_url = 'https://bonsai.byu.edu/c2o2b/userdata'
-    token_url = 'https://bonsai.byu.edu/c2o2b/token'
-    oauth_callback_url = 'https://bonsai.byu.edu/hub/oauth_callback'
+    userdata_url = 'https://{}/c2o2b/userdata'.format(PROJECT_DOMAIN)
+    token_url = 'https://{}/c2o2b/token'.format(PROJECT_DOMAIN)
+    oauth_callback_url = 'https://{}/hub/oauth_callback'.format(PROJECT_DOMAIN)
 
 c.JupyterHub.authenticator_class = BYUAuthenticator
 c.Authenticator.admin_users = { 'kth24', 'srp33'}
