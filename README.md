@@ -14,11 +14,11 @@ After cloning the repository, adjust the params in the .env file to match your B
 
 Adjust any of the settings in jupyterhub/jupyterhub_config.py to fit your needs (i.e. adjust user whitelist/admin priveleges); more settings can be found on jupyterhub's [docs](https://jupyterhub.readthedocs.io/). Users can also be added after starting jupyterhub from the admin console (example.byu.edu/hub/admin). More details about customizing your setup can be found [here](https://opendreamkit.org/2018/10/17/jupyterhub-docker/).
 
-Finally, in order for jupyter hub to run over https as recommended, you need to add the ssl certs to the certs directory as key.pem and cert.pem. If you don't have certs, you can generate self-signed ssl certs with the following command:
+Finally, in order for jupyter hub to run over https as recommended, you need to add the ssl certs by creating a certs directory in the project root and adding key.pem and cert.pem files. If you don't have signed certificates for your domain, you can generate self-signed ssl certs with the following command:
 ~~~bash
 openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem --nodes
 ~~~
-(Make sure those files are placed in the certs directory)
+(Make sure those files are placed in the certs directory that you created in the project root)
 
 
 ### Deployment
