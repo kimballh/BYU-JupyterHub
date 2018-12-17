@@ -13,8 +13,8 @@ defaultEntryPoints = ["https","http"]
   address = ":443"
     [entryPoints.https.tls]
       [[entryPoints.https.tls.certificates]]
-      certFile = "/etc/certs/piccolo_hub.cert"
-      keyFile = "/etc/certs/piccolo_hub.key"
+      certFile = "/etc/certs/cert.pem"
+      keyFile = "/etc/certs/key.pem"
 
 # Activate docker API
 [docker]
